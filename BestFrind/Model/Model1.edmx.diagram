@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="642d3c3690944620964ec09581cc64b6" Name="Diagram1">
+        <EntityTypeShape EntityType="bestFrindModel.quize" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="bestFrindModel.quize_question" Width="1.5" PointX="5.25" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="bestFrindModel.sysdiagram" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="bestFrindModel.user" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
+        <AssociationConnector Association="bestFrindModel.FK_quize_question_quize" ManuallyRouted="false" />
+        <AssociationConnector Association="bestFrindModel.FK_quize_user" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="bestFrindModel.question_answer" Width="1.5" PointX="7.5" PointY="0.875" />
+        <AssociationConnector Association="bestFrindModel.FK_question_answer_quize_question" />
+        <AssociationConnector Association="bestFrindModel.FK_question_answer_user" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
