@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="bestFrindModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="question_answer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="questionId" Type="int" />
+    <Property Name="answer" Type="nvarchar(max)" />
+    <Property Name="userId" Type="int" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="quize">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="userId" Type="int" />
+  </EntityType>
+  <EntityType Name="quize_question">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="question" Type="nvarchar(max)" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="answer" Type="nvarchar(max)" />
+    <Property Name="quizeId" Type="int" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="username" Type="nvarchar" MaxLength="50" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" />
+    <Property Name="password" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_question_answer_quize_question">
+    <End Role="quize_question" Type="Self.quize_question" Multiplicity="0..1" />
+    <End Role="question_answer" Type="Self.question_answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="quize_question">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="question_answer">
+        <PropertyRef Name="questionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_question_answer_user">
+    <End Role="user" Type="Self.user" Multiplicity="0..1" />
+    <End Role="question_answer" Type="Self.question_answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="question_answer">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_quize_question_quize">
+    <End Role="quize" Type="Self.quize" Multiplicity="0..1" />
+    <End Role="quize_question" Type="Self.quize_question" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="quize">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="quize_question">
+        <PropertyRef Name="quizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_quize_user">
+    <End Role="user" Type="Self.user" Multiplicity="0..1" />
+    <End Role="quize" Type="Self.quize" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="quize">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="bestFrindModelStoreContainer">
+    <EntitySet Name="question_answer" EntityType="Self.question_answer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="quize" EntityType="Self.quize" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="quize_question" EntityType="Self.quize_question" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_question_answer_quize_question" Association="Self.FK_question_answer_quize_question">
+      <End Role="quize_question" EntitySet="quize_question" />
+      <End Role="question_answer" EntitySet="question_answer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_question_answer_user" Association="Self.FK_question_answer_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="question_answer" EntitySet="question_answer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_quize_question_quize" Association="Self.FK_quize_question_quize">
+      <End Role="quize" EntitySet="quize" />
+      <End Role="quize_question" EntitySet="quize_question" />
+    </AssociationSet>
+    <AssociationSet Name="FK_quize_user" Association="Self.FK_quize_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="quize" EntitySet="quize" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

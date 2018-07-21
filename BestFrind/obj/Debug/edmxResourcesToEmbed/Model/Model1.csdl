@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="bestFrindModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="quize">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="userId" Type="Int32" />
+    <NavigationProperty Name="quize_question" Relationship="Self.FK_quize_question_quize" FromRole="quize" ToRole="quize_question" />
+    <NavigationProperty Name="user" Relationship="Self.FK_quize_user" FromRole="quize" ToRole="user" />
+  </EntityType>
+  <EntityType Name="quize_question">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="question" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="quizeId" Type="Int32" />
+    <NavigationProperty Name="quize" Relationship="Self.FK_quize_question_quize" FromRole="quize_question" ToRole="quize" />
+    <NavigationProperty Name="question_answer" Relationship="bestFrindModel.FK_question_answer_quize_question" FromRole="quize_question" ToRole="question_answer" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="quizes" Relationship="Self.FK_quize_user" FromRole="user" ToRole="quize" />
+    <NavigationProperty Name="question_answer" Relationship="bestFrindModel.FK_question_answer_user" FromRole="user" ToRole="question_answer" />
+  </EntityType>
+  <Association Name="FK_quize_question_quize">
+    <End Role="quize" Type="Self.quize" Multiplicity="0..1" />
+    <End Role="quize_question" Type="Self.quize_question" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="quize">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="quize_question">
+        <PropertyRef Name="quizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_quize_user">
+    <End Role="user" Type="Self.user" Multiplicity="0..1" />
+    <End Role="quize" Type="Self.quize" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="quize">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="bestFrindEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="quizes" EntityType="Self.quize" />
+    <EntitySet Name="quize_question" EntityType="Self.quize_question" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="users" EntityType="Self.user" />
+    <AssociationSet Name="FK_quize_question_quize" Association="Self.FK_quize_question_quize">
+      <End Role="quize" EntitySet="quizes" />
+      <End Role="quize_question" EntitySet="quize_question" />
+    </AssociationSet>
+    <AssociationSet Name="FK_quize_user" Association="Self.FK_quize_user">
+      <End Role="user" EntitySet="users" />
+      <End Role="quize" EntitySet="quizes" />
+    </AssociationSet>
+    <EntitySet Name="question_answer" EntityType="bestFrindModel.question_answer" />
+    <AssociationSet Name="FK_question_answer_quize_question" Association="bestFrindModel.FK_question_answer_quize_question">
+      <End Role="quize_question" EntitySet="quize_question" />
+      <End Role="question_answer" EntitySet="question_answer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_question_answer_user" Association="bestFrindModel.FK_question_answer_user">
+      <End Role="user" EntitySet="users" />
+      <End Role="question_answer" EntitySet="question_answer" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="question_answer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="questionId" Type="Int32" />
+    <Property Name="answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="userId" Type="Int32" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="quize_question" Relationship="bestFrindModel.FK_question_answer_quize_question" FromRole="question_answer" ToRole="quize_question" />
+    <NavigationProperty Name="user" Relationship="bestFrindModel.FK_question_answer_user" FromRole="question_answer" ToRole="user" />
+  </EntityType>
+  <Association Name="FK_question_answer_quize_question">
+    <End Type="bestFrindModel.quize_question" Role="quize_question" Multiplicity="0..1" />
+    <End Type="bestFrindModel.question_answer" Role="question_answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="quize_question">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="question_answer">
+        <PropertyRef Name="questionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_question_answer_user">
+    <End Type="bestFrindModel.user" Role="user" Multiplicity="0..1" />
+    <End Type="bestFrindModel.question_answer" Role="question_answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="question_answer">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
